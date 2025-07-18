@@ -1,79 +1,242 @@
-<html>
-  <head>
-    <title>cambridge dictionary api</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <style>
-      @import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap");
-      * {
-        font-family: "Source Code Pro", monospace;
-      }
-    </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="p-5 text-center bg-purple-100">
-    <h1 class="text-3xl font-bold mt-5">cambridge dictionary api</h1>
-    <div class="pick mt-8 flex mx-auto items-center justify-center mb-5">
-      <p class="text-lg">/api/dictionary/</p>
-      <select
-        name="lang"
-        id="lang"
-        class="bg-purple-300 rounded-lg px-3 py-1 mx-2 text-lg"
-        title="language"
-      >
-        <option value="en">en</option>
-        <option value="uk">uk</option>
-        <option value="en-tw">en-tw</option>
-        <option value="en-cn">en-cn</option>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Cambridge Dictionary API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="shortcut icon" href="https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1752835094/uuafry0omykkusq7pwpl.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      font-family: 'Source Code Pro', monospace;
+    }
+
+    #suggestions-box li:hover {
+      background-color: #e9d8fd;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 min-h-screen flex flex-col items-center justify-start py-10 px-4 pb-24">
+  <!-- Title -->
+  <h1 class="text-4xl md:text-5xl font-bold text-purple-800 mb-10 drop-shadow-md text-center">
+    Yusuf Cambridge Dictionary
+  </h1>
+
+  <!-- Form -->
+  <div class="relative bg-white p-6 rounded-xl shadow-xl w-full max-w-lg">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+      <select id="lang"
+        class="w-full sm:w-[30%] bg-purple-100 border border-purple-300 rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-purple-400 cursor-pointer">
+        <option value="en">🇺🇸 English (US)</option>
+        <option value="uk">🇬🇧 English (UK)</option>
+        <option value="en-tw">🇹🇼 English ⇄ 中文繁體</option>
+        <option value="en-cn">🇨🇳 English ⇄ 中文简体</option>
       </select>
-      <p class="text-lg">/</p>
-      <input
-        class="bg-purple-300 rounded-lg px-3 py-1 !text-black placeholder:text-black mx-2 text-lg"
-        type="text"
-        name="word"
-        id="word"
-        title="word"
-        placeholder="enter the word"
-      />
+      <div class="w-full relative">
+        <input id="word" type="text" placeholder="Enter a word..."
+          class="w-full bg-purple-100 border border-purple-300 rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder:text-gray-600" />
+        <!-- Suggestions -->
+        <ul id="suggestions-box" class="absolute z-10 mt-1 bg-white border border-purple-300 rounded-lg shadow-md w-full hidden"></ul>
+      </div>
+      <button onclick="Go()"
+        class="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white font-bold px-6 py-2 rounded-lg shadow-md transition">
+        Search
+      </button>
     </div>
-    <button
-      onclick="Go()"
-      class="px-10 font-bold text-xl py-2 hover:drop-shadow-xl transition-[0.2s] rounded-lg bg-purple-400 drop-shadow-md"
-      type="submit"
-    >
-      GO
-    </button>
-    <div class="flex mt-10 justify-center items-center">
-      <a
-        href="https://github.com/chenelias/cambridge-dictionary-api"
-        class="flex items-center bg-white px-3 py-1 mr-4 rounded-xl transition-[0.2s] hover:drop-shadow-xl drop-shadow-md"
-        target="_blank"
-      >
-        <i class="fa fa-github github-icon text-3xl"></i>&nbsp;
-        <div class="block text-left ml-1">
-          <p>GitHub Repository</p>
-          <p>chenelias/cambridge-dictionary-api</p>
-        </div>
-      </a>
+  </div>
+
+  <!-- Synonyms/Antonyms Toggle -->
+  <div id="toggle-synonyms"
+    class="hidden cursor-pointer mt-4 bg-yellow-300 hover:bg-yellow-400 transition rounded-xl shadow-md px-6 py-3 text-center font-bold text-purple-900 flex items-center justify-between w-full max-w-2xl">
+    <span>Synonyms and Antonyms</span>
+    <img id="arrow" src="https://cdn-icons-png.flaticon.com/512/32/32195.png" class="w-5 h-5 transition-transform duration-300" />
+  </div>
+
+  <!-- Synonyms/Antonyms Container -->
+  <div id="synonyms-container" class="hidden mt-2 bg-yellow-100 rounded-xl p-4 w-full max-w-2xl">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <h3 class="font-bold text-purple-800 mb-1">Synonyms</h3>
+        <ul id="synonyms" class="list-disc list-inside text-purple-700 text-sm space-y-1"></ul>
+      </div>
+      <div>
+        <h3 class="font-bold text-purple-800 mb-1">Antonyms</h3>
+        <ul id="antonyms" class="list-disc list-inside text-purple-700 text-sm space-y-1"></ul>
+      </div>
     </div>
-    <div class="mt-4 text-center">
-      <p class="text-xl mb-2 font-bold">Support me</p>
-      <a
-        class="rounded-xl transition-[0.2s] hover:drop-shadow-xl drop-shadow-md"
-        href="https://www.buymeacoffee.com/eliaschen"
-        ><img
-          class="mx-auto"
-          src="https://img.buymeacoffee.com/button-api/?text=By me a coffee&emoji=&slug=eliaschen&button_colour=8c2eff&font_colour=ffffff&font_family=Arial&outline_colour=ffffff&coffee_colour=FFDD00"
-      /></a>
-    </div>
-    <script>
-      function Go() {
-        let lang = document.querySelector("#lang").value;
-        let word = document.querySelector("#word").value;
-        window.location.href = `/api/dictionary/${lang}/${word === "" ? "work" : word}`;
+  </div>
+
+  <!-- Result -->
+  <div id="result" class="mt-10 w-full max-w-2xl text-left"></div>
+
+  <!-- Footer -->
+  <footer class="hidden sm:fixed bottom-0 w-full bg-white/90 backdrop-blur-sm text-sm text-gray-600 text-center px-4 py-2 border-t border-purple-300 shadow-md">
+    The site information was obtained from
+    <a href="https://dictionary.cambridge.org/" target="_blank" class="text-purple-800 underline">Cambridge Dictionary</a> and
+    <a href="https://www.wiktionary.org/" target="_blank" class="text-purple-800 underline">Wiktionary</a>.
+    The API is open source and available on
+    <a href="https://github.com/chenelias/cambridge-dictionary-api" target="_blank" class="text-purple-800 underline">GitHub</a>.
+  </footer>
+
+  <script>
+    async function Go() {
+      const lang = document.getElementById("lang").value;
+      const word = document.getElementById("word").value.trim();
+      if (word === "") return;
+      const resultDiv = document.getElementById("result");
+      resultDiv.innerHTML = "<p class='text-gray-700'>Loading...</p>";
+      suggestionsBox.classList.add("hidden");
+
+      try {
+        const res = await fetch(`/api/dictionary/${lang}/${word}`);
+        if (!res.ok) throw new Error("Response not OK");
+
+        const data = await res.json();
+        let html = `<h2 class="text-2xl font-bold text-purple-800 mb-2">${data.word}</h2>`;
+        html += `<p class="text-md text-purple-700 mb-4">Part of speech: ${data.pos.join(", ")}</p>`;
+
+        if (data.pronunciation.length > 0) {
+          html += "<div class='mb-4'>";
+          data.pronunciation.slice(0, 2).forEach(p => {
+            html += `
+              <div class="mb-2">
+                <strong>${p.lang} (${p.pos})</strong>: ${p.pron}
+                <audio controls class="inline ml-2"><source src="${p.url}" type="audio/mpeg"></audio>
+              </div>`;
+          });
+          html += "</div>";
+        }
+
+        data.definition.forEach(def => {
+          html += `
+            <div class="mb-6 p-4 bg-white rounded-xl shadow-md">
+              <span class="text-sm font-semibold text-gray-600"><i>${def.pos}</i></span>
+              <p class="font-semibold text-purple-900 mb-1">${def.text}</p>
+              <p class="text-gray-700 italic mb-2">${def.translation}</p>
+              ${def.example.length > 0 ? "<ul class='list-disc list-inside text-sm text-gray-600'>" : ""}
+              ${def.example.map(e => `<li>${e.text}</li>`).join("")}
+              ${def.example.length > 0 ? "</ul>" : ""}
+            </div>`;
+        });
+
+        document.getElementById("toggle-synonyms").classList.remove("hidden");
+        document.getElementById("synonyms-container").classList.add("hidden");
+        document.getElementById("arrow").style.transform = "rotate(0deg)";
+
+        resultDiv.innerHTML = html;
+      } catch (error) {
+        console.error("Fetch error:", error);
+        resultDiv.innerHTML = `<p class="text-red-600 font-bold">Word not found.</p>`;
       }
-    </script>
-  </body>
+    }
+
+    async function getSynonyms(word) {
+      const apiKey = "d4gmVyvZaw6sJnxoBLunNA==xLmUHIJRAqPkYPj3";
+      try {
+        const res = await fetch(`https://api.api-ninjas.com/v1/thesaurus?word=${word}`, {
+          headers: { "X-Api-Key": apiKey }
+        });
+        const data = await res.json();
+        return data.synonyms || [];
+      } catch {
+        return [];
+      }
+    }
+
+    async function getAntonyms(word) {
+      const apiKey = "d4gmVyvZaw6sJnxoBLunNA==xLmUHIJRAqPkYPj3";
+      try {
+        const res = await fetch(`https://api.api-ninjas.com/v1/thesaurus?word=${word}`, {
+          headers: { "X-Api-Key": apiKey }
+        });
+        const data = await res.json();
+        return data.antonyms || [];
+      } catch {
+        return [];
+      }
+    }
+
+    document.getElementById("toggle-synonyms").addEventListener("click", async () => {
+      const container = document.getElementById("synonyms-container");
+      const arrow = document.getElementById("arrow");
+      const word = document.getElementById("word").value.trim();
+
+      container.classList.toggle("hidden");
+      arrow.style.transform = container.classList.contains("hidden") ? "rotate(0deg)" : "rotate(180deg)";
+
+      document.getElementById("synonyms").innerHTML = "<li class='text-gray-500'>Loading...</li>";
+      document.getElementById("antonyms").innerHTML = "<li class='text-gray-500'>Loading...</li>";
+
+      const synonyms = await getSynonyms(word);
+      const antonyms = await getAntonyms(word);
+
+      document.getElementById("synonyms").innerHTML =
+        synonyms.length > 0
+          ? synonyms.map(s => `<li><a href="#" class="text-purple-800 underline" onclick="searchWord('${s}')">${s}</a></li>`).join("")
+          : "<li>No synonyms found.</li>";
+
+      document.getElementById("antonyms").innerHTML =
+        antonyms.length > 0
+          ? antonyms.map(a => `<li><a href="#" class="text-purple-800 underline" onclick="searchWord('${a}')">${a}</a></li>`).join("")
+          : "<li>No antonyms found.</li>";
+    });
+
+    function searchWord(word) {
+      document.getElementById("word").value = word;
+      Go();
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        Go();
+      }
+    });
+
+    // Autocomplete logic
+    const inputField = document.getElementById("word");
+    const suggestionsBox = document.getElementById("suggestions-box");
+
+    inputField.addEventListener("input", async (e) => {
+      const query = e.target.value.trim();
+      if (query.length < 2) return suggestionsBox.classList.add("hidden");
+
+      try {
+        const res = await fetch(`https://api.datamuse.com/sug?s=${query}`);
+        const data = await res.json();
+
+        if (data.length === 0) return suggestionsBox.classList.add("hidden");
+
+        suggestionsBox.innerHTML = "";
+        data.slice(0, 7).forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item.word;
+          li.className = "px-4 py-2 hover:bg-purple-100";
+          li.onclick = () => {
+            inputField.value = item.word;
+            suggestionsBox.classList.add("hidden");
+            Go();
+          };
+          suggestionsBox.appendChild(li);
+        });
+        suggestionsBox.classList.remove("hidden");
+      } catch (err) {
+        console.error("Autocomplete error:", err);
+      }
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!suggestionsBox.contains(e.target) && e.target !== inputField) {
+        suggestionsBox.classList.add("hidden");
+      }
+    });
+  </script>
+
+</body>
+
 </html>
