@@ -41,6 +41,13 @@ const fetchVerbs = (wiki) => {
 
 app.use(cors({ origin: "*" }));
 
+const path = require("path");
+
+app.get("/robots.txt", (req, res) => {
+  res.sendFile(path.join(__dirname, "robots.txt"));
+});
+
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
