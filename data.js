@@ -43,9 +43,7 @@ app.use(cors({ origin: "*" }));
 
 const path = require("path");
 
-app.get("/robots.txt", (req, res) => {
-  res.sendFile(path.join(__dirname, "robots.txt"));
-});
+app.use(express.static(path.join(__dirname, "/")));
 
 
 app.get("/", (req, res) => {

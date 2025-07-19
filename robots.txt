@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://dictionary-h9am.onrender.com/sitemap.xml
