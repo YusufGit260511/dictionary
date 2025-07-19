@@ -7,9 +7,31 @@
   <title>Yusuf Dictionary</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="shortcut icon" href="https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1752835094/uuafry0omykkusq7pwpl.jpg" type="image/x-icon">
+  <link rel="shortcut icon"
+    href="https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1752835094/uuafry0omykkusq7pwpl.jpg"
+    type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600;700&display=swap"
+    rel="stylesheet" />
+  <!-- SEO -->
+  <meta name="description" content="Yusuf Dictionary is a smart and fast online dictionary that gives you translations, pronunciation, synonyms, and antonyms instantly. 100% free, no sign-up required.">
+  <meta name="keywords" content="dictionary, Yusuf Dictionary, translation, English, pronunciation, synonyms, antonyms, online dictionary, word meanings">
+  <meta name="author" content="Yusufkhoja Sultanhojaev">
+
+  <!-- Open Graph for social media previews -->
+  <meta property="og:title" content="Yusuf Dictionary — Your Smart Online Dictionary" />
+  <meta property="og:description" content="Fast and easy word translations, pronunciation, synonyms and antonyms. Clean, modern, and completely free." />
+  <meta property="og:image" content="https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1752835094/uuafry0omykkusq7pwpl.jpg" />
+  <meta property="og:url" content="https://dictionary-h9am.onrender.com/" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Yusuf Dictionary — Your Smart Online Dictionary" />
+  <meta name="twitter:description" content="Free and fast word lookup with translations, pronunciation, synonyms and antonyms. No ads, no login." />
+  <meta name="twitter:image" content="https://res.cloudinary.com/dtjjgiitl/image/upload/q_auto:good,f_auto,fl_progressive/v1752835094/uuafry0omykkusq7pwpl.jpg" />
+
+
   <style>
     * {
       font-family: 'Source Code Pro', monospace;
@@ -22,7 +44,8 @@
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 min-h-screen flex flex-col items-center justify-start py-10 px-4 pb-24">
+<body
+  class="bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 min-h-screen flex flex-col items-center justify-start py-10 px-4 pb-24">
   <!-- Title -->
   <h1 class="text-4xl md:text-5xl font-bold text-purple-800 mb-10 drop-shadow-md text-center">
     Yusuf Dictionary
@@ -42,7 +65,8 @@
         <input id="word" type="text" placeholder="Enter a word..."
           class="w-full bg-purple-100 border border-purple-300 rounded-lg px-4 py-2 text-lg focus:outline-none focus:ring-2 focus:ring-purple-400 placeholder:text-gray-600" />
         <!-- Suggestions -->
-        <ul id="suggestions-box" class="absolute z-10 mt-1 bg-white border border-purple-300 rounded-lg shadow-md w-full hidden"></ul>
+        <ul id="suggestions-box"
+          class="absolute z-10 mt-1 bg-white border border-purple-300 rounded-lg shadow-md w-full hidden"></ul>
       </div>
       <button onclick="Go()"
         class="w-full sm:w-auto bg-purple-500 hover:bg-purple-600 text-white font-bold px-6 py-2 rounded-lg shadow-md transition">
@@ -55,7 +79,8 @@
   <div id="toggle-synonyms"
     class="hidden cursor-pointer mt-4 bg-yellow-300 hover:bg-yellow-400 transition rounded-xl shadow-md px-6 py-3 text-center font-bold text-purple-900 flex items-center justify-between w-full max-w-2xl">
     <span>Synonyms and Antonyms</span>
-    <img id="arrow" src="https://cdn-icons-png.flaticon.com/512/32/32195.png" class="w-5 h-5 transition-transform duration-300" />
+    <img id="arrow" src="https://cdn-icons-png.flaticon.com/512/32/32195.png"
+      class="w-5 h-5 transition-transform duration-300" />
   </div>
 
   <!-- Synonyms/Antonyms Container -->
@@ -76,12 +101,15 @@
   <div id="result" class="mt-10 w-full max-w-2xl text-left"></div>
 
   <!-- Footer -->
-  <footer class="hidden sm:fixed bottom-0 w-full bg-white/90 backdrop-blur-sm text-sm text-gray-600 text-center px-4 py-2 border-t border-purple-300 shadow-md">
+  <footer
+    class="hidden sm:fixed bottom-0 w-full bg-white/90 backdrop-blur-sm text-sm text-gray-600 text-center px-4 py-2 border-t border-purple-300 shadow-md">
     The site information was obtained from
-    <a href="https://dictionary.cambridge.org/" target="_blank" class="text-purple-800 underline">Cambridge Dictionary</a> and
+    <a href="https://dictionary.cambridge.org/" target="_blank" class="text-purple-800 underline">Cambridge
+      Dictionary</a> and
     <a href="https://www.wiktionary.org/" target="_blank" class="text-purple-800 underline">Wiktionary</a>.
     The API is open source and available on
-    <a href="https://github.com/chenelias/cambridge-dictionary-api" target="_blank" class="text-purple-800 underline">GitHub</a>.
+    <a href="https://github.com/chenelias/cambridge-dictionary-api" target="_blank"
+      class="text-purple-800 underline">GitHub</a>.
   </footer>
 
   <script>
